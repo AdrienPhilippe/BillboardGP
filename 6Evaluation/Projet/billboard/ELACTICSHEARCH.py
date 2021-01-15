@@ -19,7 +19,7 @@ def generate_data(documents):
             "_source": {k:v if v else None for k,v in docu.items()},
         } 
 
-document = df.fillna("").to_dict(orient="records")
+document = df_bilboard.fillna("").to_dict(orient="records")
 bulk(Bilboard_ES, generate_data(document))
 
 
