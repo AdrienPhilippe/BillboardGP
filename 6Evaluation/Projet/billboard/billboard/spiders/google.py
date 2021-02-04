@@ -6,17 +6,17 @@ import pandas as pd
 dfGoogle = pd.read_csv("D:/GITHUB/BillboardGP/6Evaluation/Projet/billboard/billboard/dataGoogle.csv")
 i = 0
 
-class GeniusSpider(scrapy.Spider):
+class GoogleSpider(scrapy.Spider):
     name = 'google'
     allowed_domains = ['google.fr']
     start_urls = ['https://google.fr/search?q='+str('genius')+"+"+str(dfGoogle['artist'][i])+"+"+str(dfGoogle['title'][i])]
 
-    def parse(self, response):
+    def parseGoogle(self, response):
         global i
 
         lienBrut = response.css('a::attr(href)')[18].extract()
         yield {
-            'lien' : re.findall(r"(?<=q=)(.*)(?=&sa)", lienBrut)
+            'lien' : re.findall(r"(?<=https){2}(.*)(?=lyrics)", lienBrut)
         }
 
         i = i + 1

@@ -20,8 +20,8 @@ NEWSPIDER_MODULE = 'billboard.spiders'
 #     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
 #     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
 
-#     # 'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
-#     # 'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
+# #     # 'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
+# #     # 'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
 # }
 
 # Obey robots.txt rules
