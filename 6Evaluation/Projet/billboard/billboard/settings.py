@@ -14,7 +14,15 @@ NEWSPIDER_MODULE = 'billboard.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'billboard (+http://www.yourdomain.com)'
+#USER_AGENT = 'my-cool-project (http://example.com)'
+
+# DOWNLOADER_MIDDLEWARES = {
+#     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+#     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
+
+#     # 'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
+#     # 'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
+# }
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
