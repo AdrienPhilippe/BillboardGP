@@ -6,7 +6,7 @@ import datetime
 class Hot100Spider(scrapy.Spider):
     name = 'hot100'
     allowed_domains = ['billboard.com']
-    start_urls = ['http://billboard.com/charts/hot-100/2000-02-12/']
+    start_urls = ['http://billboard.com/charts/hot-100/2021-01-02/']
 
     # def start_requests(self, date):
     #     yield scrapy.Request(url='https://billboard.com/charts/hot-100/'+date, callback=self.parse)
