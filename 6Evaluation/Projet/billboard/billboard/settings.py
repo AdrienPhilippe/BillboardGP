@@ -18,7 +18,7 @@ NEWSPIDER_MODULE = 'billboard.spiders'
 
 # DOWNLOADER_MIDDLEWARES = {
 #     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-#     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
+#     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 399,
 
 # #     # 'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
 # #     # 'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
