@@ -11,19 +11,25 @@ class GeniusSpider(scrapy.Spider):
     global i
     name = 'genius'
     allowed_domains = ['genius.com']
-    start_urls = ['https://genius.com/'+str(dfGenius['artist'][i])+"-"+str(dfGenius['title'][i])+"-lyrics"]
+    start_urls = ['https://genius.com/'+str(dfGenius['artist'][0])+"-"+str(dfGenius['title'][0])+"-lyrics"]
 
     def parse(self, response):
         global i
-        lyricsBrut = response.css('div.Lyrics__Container-sc-1ynbvzw-2.jgQsqn').get()
-        
-        yield {
-            'artist': dfTitreArtist['artist'][i],
-            'title': dfTitreArtist['title'][i],
-            'lyrics': re.sub(r"<.*?>"," ", lyricsBrut)
-        }
+        urls = []
 
-        i = i + 1
-        next_song_string = str(dfGenius['artist'][i])+"-"+str(dfGenius['title'][i]+"-lyrics")
-        next_page_url = f'https://genius.com/{next_song_string}'
-        yield scrapy.Request(next_page_url, callback=self.parse)
+        for i in range(len(dfGenius['artist'])):
+            urls.append('https://genius.com/'+str(dfGenius['artist'][i])+"-"+str(dfGenius['title'][i])+"-lyrics")
+        
+        for url in urls:
+            try: 
+                yield scrapy.Request(url, callback=self.parseGenius)
+            except:
+                pass
+
+    def parseGenius(self, response):
+
+        yield {
+            'artist': response.xpath('//a[@class="Link-h3isu4-0 dpVWpH SongHeader__Artist-sc-1b7aqpg-9 eTAmkN"]/text()').get(),
+            'title': response.xpath('//h1[@class="SongHeader__Title-sc-1b7aqpg-7 jQiTNQ"]/text()').get(),
+            'lyrics': re.sub(r"<.*?>"," ", str(response.css('div.Lyrics__Container-sc-1ynbvzw-2.jgQsqn').get()) )
+        }
