@@ -34,18 +34,18 @@ from pymongo import MongoClient
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
-LOCAL = True
-Bilboard_ES = Elasticsearch(hosts=["localhost" if LOCAL else "elasticsearch"])
+LOCAL = False
+Bilboard_ES = Elasticsearch(hosts="http://localhost", port= 9200)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
-
-
 @app.route('/')
 def rien():
+  data = pd.read_csv("lien.csv")
+  documents = data.fillna("").to_dict(orient="records")
+  bulk(Bilboard_ES, generate_data(documents))
+
   return redirect('/MusicbarLooker')
-
-
 
 @app.route('/MusicbarLooker', methods=('GET', 'POST'))
 def MusicSearch():
@@ -57,45 +57,26 @@ def MusicSearch():
         return redirect('/MusicSearchSinger/'+form.typing.data)
     return render_template('search.html',form=form)
 
-
-
-@app.route('/result/<search_word>')
-def sucess(search_word):
-    """
-    Affichage des résultats de la recherche en fonction des artistes et albums.
-    """
-    pass
-
-
 def generate_data(documents):
     """
     Génération des données cherchées
     """
     for docu in documents:
         yield {
-            "_index": "lyrics",
-            "_type": "lyrics",
+            "_index": "artist",
+            "_type": "artist",
             "_source": {k:v if v else None for k,v in docu.items()},
         }
 
 @app.route('/MusicSearchSinger/<search_word>', methods=('GET', 'POST'))       
 def search_singer(search_word):
-    path = os.getcwd()+ r"\6Evaluation"+"\Projet"+r"\billboard\billboard"+"\lien.csv"
-    data = pd.read_csv(path)
-    documents = data.fillna("").to_dict(orient="records")
-    bulk(Bilboard_ES, generate_data(documents))
-    
-    
-    
-    singer_name = str(search_word).lower()
     QUERY = {
       "query": {
-        "match" : { 
-            "artist" : singer_name,
-            } 
+        "term" : { 
+            "artist" : search_word.lower()} 
       }
     }
-    result = Bilboard_ES.search(index="lyrics", body=QUERY)
+    result = Bilboard_ES.search(index="artist", body=QUERY)
     source = result["hits"]["hits"]
     seen = set()
     new_source = []
@@ -107,8 +88,9 @@ def search_singer(search_word):
     
     artist = [elt['_source']['artist'] for elt in new_source]
     title = [elt['_source']['title'] for elt in new_source]
-    # test = [elt['_source']['title'] for elt in result["hits"]["hits"]]
-    return render_template('results.html',title=title,artists=artist)
+    lyrics = [elt['_source']['lyrics'] for elt in new_source]
+
+    return render_template('results.html',title=title,artists=artist,lyrics=lyrics)
 
 @app.route('/MusicSearchTitle', methods=('GET', 'POST'))
 def search_title(title):

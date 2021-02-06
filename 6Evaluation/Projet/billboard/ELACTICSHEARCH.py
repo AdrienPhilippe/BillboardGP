@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 import json
 
-df_bilboard = pd.read_csv("test.csv")
+df_bilboard = pd.read_csv("lien.csv")
 
-LOCAL = False
+LOCAL = True
 
 Bilboard_ES = Elasticsearch(hosts=["localhost" if LOCAL else "elasticsearch"])
 
