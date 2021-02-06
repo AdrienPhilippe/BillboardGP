@@ -21,6 +21,14 @@ form{
     text-align: center;
 }
 
+a{
+    color:#00000000;
+    text-decoration: none;
+}
+a:hover{
+    color:#FFFFFF;  
+}
+
 .table-fill {
     background: white;
     border-radius:3px;
@@ -36,14 +44,14 @@ form{
 tr {
     border-top: 1px solid #C1C3D1;
     border-bottom: 1px solid #C1C3D1;
-    color:#666B85;
+    color:#ecedf1;
     font-size:16px;
     font-weight:normal;
     text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
 
 tr:hover td {
-    background:#4E5066;
+    background:#faba0b;
     color:#FFFFFF;
     border-top: 1px solid #22262e;
 }
