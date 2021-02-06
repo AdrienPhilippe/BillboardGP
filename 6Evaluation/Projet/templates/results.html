@@ -1,27 +1,26 @@
 <html>
   <body style="background-color: #c3c5d8">
   	<center>
-    <h1>What we found:</h1>
 
-    <h2>Song's Title</h2>
     {% for i in range(title|length) %}
+    <h1>RECHERCHES POUR : {{artists[i]}}</h1>
+	
+    <h2>Liste des titres : </h2>
       <table border="1">
 		  <tbody>
 			  <tr>
 				  <td style="width:300px" bgcolor="a5ffd6">title: {{title[i]}}</td>
-				  <td style="width:200px" bgcolor="a5ffd6">Artist: {{artists[i]}}</td>
-				  
 			  </tr>
 		  </tbody>
       </table>
     {% endfor %}
 	
 	<br/>
-    <a href='/MusicSearch'> Looking for something else ? </a>
+    <a href='/MusicSearch'> Effectuer une autre recherche ?</a>
     <br>
     <div style="height:50px;display:block;"> </div>
   	  <p>
-	    <i>All rights reserved to the <a href="https://www.billboard.com/charts/billboard-200" target="_blank">2020 Billboard</a>.</i>
+	    <i>Théo Guerrois et Adrien Philippe</i>
 	  </p>
 	</center>
   </body>
