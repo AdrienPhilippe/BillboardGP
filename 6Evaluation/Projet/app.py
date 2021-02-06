@@ -13,8 +13,9 @@ import matplotlib.pyplot as plt
 import plotly
 import plotly.graph_objs as go
 import json
+import re
 import numpy as np
-from forms import MusicSearchForm
+from bar import SearchBar
 
 # from bokeh.embed import json_item
 # from bokeh.models import (HoverTool, FactorRange, Plot, LinearAxis, Grid, Range1d)
@@ -40,13 +41,27 @@ app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 
 
-@app.route('/MusicSearch', methods=('GET', 'POST'))
+@app.route('/')
+def rien():
+  path = os.getcwd()+ r"\6Evaluation"+"\Projet"+r"\billboard\billboard"+"\lien.csv"
+  data = pd.read_csv(path)
+  documents = data.fillna("").to_dict(orient="records")
+  bulk(Bilboard_ES, generate_data(documents))
+
+
+  return redirect('/MusicbarLooker')
+
+
+
+@app.route('/MusicbarLooker', methods=('GET', 'POST'))
 def MusicSearch():
     """
     Création de la barre de recherche ainsi que de l'affichage des données, et affichage du bargraph
     """
-
-    pass
+    form = SearchBar()
+    if form.validate_on_submit():
+        return redirect('/MusicSearchSinger/'+form.typing.data)
+    return render_template('search.html',form=form)
 
 
 
@@ -69,17 +84,17 @@ def generate_data(documents):
             "_source": {k:v if v else None for k,v in docu.items()},
         }
 
-@app.route('/MusicSearchSinger', methods=('GET', 'POST'))       
-def search_singer(singer):
-    singer_name = str(singer).lower() + "~"
+@app.route('/MusicSearchSinger/', methods=('GET', 'POST'))       
+def search_singer(search_word):
+    singer_name = str(search_word).lower()
     QUERY = {
       "query": {
-        "term" : { 
+        "match" : { 
             "artist" : singer_name,
             } 
       }
     }
-    result = Bilboard_ES.search(index="nom_du_nouveau_index", body=QUERY)
+    result = Bilboard_ES.search(index="lyrics", body=QUERY)
     return [elt['_source']['title'] for elt in result["hits"]["hits"]]
 
 @app.route('/MusicSearchTitle', methods=('GET', 'POST'))
@@ -92,7 +107,7 @@ def search_title(title):
             } 
       }
     }
-    result = Bilboard_ES.search(index="nom_du_nouveau_index", body=QUERY)
+    result = Bilboard_ES.search(index="lyrics", body=QUERY)
     return [elt['_source']['title'] for elt in result["hits"]["hits"]]
 
 @app.route('/MusicSearchLyrics', methods=('GET', 'POST'))
@@ -105,7 +120,7 @@ def search_lyrics(lyrics):
             } 
       }
     }
-    result = Bilboard_ES.search(index="nom_du_nouveau_index", body=QUERY)
+    result = Bilboard_ES.search(index="lyrics", body=QUERY)
     return [elt['_source']['title'] for elt in result["hits"]["hits"]]
 
 if __name__ == '__main__':
