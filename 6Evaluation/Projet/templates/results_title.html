@@ -1,0 +1,28 @@
+<html>
+  <body style="background-color: #c3c5d8">
+  	<center>
+
+    <h1>RECHERCHES POUR : {{title[0]}}</h1>
+	
+    <h2>Liste des titres : </h2>
+	{% for i in range(title|length) %}
+      <table border="1">
+		  <tbody>
+			  <tr>
+				  <td style="width:300px" bgcolor="a5ffd6">{{i+1}}: {{artists[i]}}</td>
+			  </tr>
+		  </tbody>
+      </table>
+    {% endfor %}
+    <p> {{lyrics}} </p>
+	
+	<br/>
+    <a href='/MusicbarLooker'> Effectuer une autre recherche ?</a>
+    <br>
+    <div style="height:50px;display:block;"> </div>
+  	  <p>
+	    <i>Théo Guerrois et Adrien Philippe</i>
+	  </p>
+	</center>
+  </body>
+</html>

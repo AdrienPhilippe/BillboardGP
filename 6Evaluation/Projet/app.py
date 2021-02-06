@@ -68,6 +68,7 @@ def generate_data(documents):
             "_source": {k:v if v else None for k,v in docu.items()},
         }
 
+
 @app.route('/MusicSearchSinger/<search_word>', methods=('GET', 'POST'))       
 def search_singer(search_word):
     QUERY = {
@@ -90,33 +91,55 @@ def search_singer(search_word):
     title = [elt['_source']['title'] for elt in new_source]
     lyrics = [elt['_source']['lyrics'] for elt in new_source]
 
-    return render_template('results.html',title=title,artists=artist,lyrics=lyrics)
+    return render_template('results_singer.html',title=title,artists=artist,lyrics=lyrics)
 
-@app.route('/MusicSearchTitle', methods=('GET', 'POST'))
-def search_title(title):
-    title_name = str(title).lower() + "~"
+@app.route('/MusicSearchTitle/<search_word>', methods=('GET', 'POST'))
+def search_title(search_word):
     QUERY = {
       "query": {
         "term" : { 
-            "title" : title_name,
-            } 
+            "title" : search_word.lower()} 
       }
     }
-    result = Bilboard_ES.search(index="lyrics", body=QUERY)
-    return [elt['_source']['title'] for elt in result["hits"]["hits"]]
+    result = Bilboard_ES.search(index="artist", body=QUERY)
+    source = result["hits"]["hits"]
+    seen = set()
+    new_source = []
+    for d in source:
+        t = tuple(d["_source"].items())
+        if t not in seen:
+            seen.add(t)
+            new_source.append(d)
+    
+    artist = [elt['_source']['artist'] for elt in new_source]
+    title = [elt['_source']['title'] for elt in new_source]
+    lyrics = [elt['_source']['lyrics'] for elt in new_source]
 
-@app.route('/MusicSearchLyrics', methods=('GET', 'POST'))
-def search_lyrics(lyrics):
-    lyrics_name = str(lyrics).lower() + "~"
+    return render_template('results_title.html',title=title,artists=artist,lyrics=lyrics)
+
+@app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
+def search_lyrics(search_word):
     QUERY = {
       "query": {
         "term" : { 
-            "lyrics" : lyrics_name,
-            } 
+            "lyrics" : search_word.lower()} 
       }
     }
-    result = Bilboard_ES.search(index="lyrics", body=QUERY)
-    return [elt['_source']['title'] for elt in result["hits"]["hits"]]
+    result = Bilboard_ES.search(index="artist", body=QUERY)
+    source = result["hits"]["hits"]
+    seen = set()
+    new_source = []
+    for d in source:
+        t = tuple(d["_source"].items())
+        if t not in seen:
+            seen.add(t)
+            new_source.append(d)
+    
+    artist = [elt['_source']['artist'] for elt in new_source]
+    title = [elt['_source']['title'] for elt in new_source]
+    lyrics = [elt['_source']['lyrics'] for elt in new_source]
+
+    return render_template('results_lyrics.html',title=title,artists=artist,lyrics=lyrics)
 
 if __name__ == '__main__':
     print("Running...")

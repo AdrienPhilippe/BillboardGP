@@ -6,17 +6,11 @@
 	
     <h2>Liste des titres : </h2>
 	{% for i in range(title|length) %}
-	
       <table border="1">
-		  <thead>
-			<tr>
-			  <th>ID</th>
-			  <th>Titres</th>
-			</tr>
-		  </thead>
 		  <tbody>
 			  <tr>
-				<td style="width:300px" bgcolor="a5ffd6"><a href="result_title.html/MusicSearchSinger/{{title[i]}}" target="_blank">{{i+1}: {{title[i]}}</a></td>
+				<td>{{i+1}}</td>
+				<td style="width:300px" bgcolor="a5ffd6"><a href="/MusicSearchTitle/{{title[i]}}">{{title[i]}}</a></td>
 			  </tr>
 		  </tbody>
       </table>
