@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pickle
 import re
 
 df_bilboard = pd.read_csv("test.csv", sep=",")
@@ -18,6 +19,10 @@ for i in range(len(df)):
     liste[:] = []
 
 print(dic_final)
+
+a_file = open("data.pkl", "wb")
+pickle.dump(dic_final, a_file)
+a_file.close()
 
 # df_b_cleared = df_bilboard.fillna("")
 
