@@ -3,12 +3,12 @@
   	<center>
     <h1>What we found:</h1>
 
-    <h2>Albums</h2>
-    {% for i in range(albums|length) %}
+    <h2>Song's Title</h2>
+    {% for i in range(title|length) %}
       <table border="1">
 		  <tbody>
 			  <tr>
-				  <td style="width:300px" bgcolor="a5ffd6">Album: {{albums[i]}}</td>
+				  <td style="width:300px" bgcolor="a5ffd6">title: {{title[i]}}</td>
 				  <td style="width:200px" bgcolor="a5ffd6">Artist: {{artists[i]}}</td>
 				  
 			  </tr>

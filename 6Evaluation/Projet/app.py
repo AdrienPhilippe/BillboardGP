@@ -43,12 +43,6 @@ app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 @app.route('/')
 def rien():
-  path = os.getcwd()+ r"\6Evaluation"+"\Projet"+r"\billboard\billboard"+"\lien.csv"
-  data = pd.read_csv(path)
-  documents = data.fillna("").to_dict(orient="records")
-  bulk(Bilboard_ES, generate_data(documents))
-
-
   return redirect('/MusicbarLooker')
 
 
@@ -84,8 +78,15 @@ def generate_data(documents):
             "_source": {k:v if v else None for k,v in docu.items()},
         }
 
-@app.route('/MusicSearchSinger/', methods=('GET', 'POST'))       
+@app.route('/MusicSearchSinger/<search_word>', methods=('GET', 'POST'))       
 def search_singer(search_word):
+    path = os.getcwd()+ r"\6Evaluation"+"\Projet"+r"\billboard\billboard"+"\lien.csv"
+    data = pd.read_csv(path)
+    documents = data.fillna("").to_dict(orient="records")
+    bulk(Bilboard_ES, generate_data(documents))
+    
+    
+    
     singer_name = str(search_word).lower()
     QUERY = {
       "query": {
@@ -95,7 +96,19 @@ def search_singer(search_word):
       }
     }
     result = Bilboard_ES.search(index="lyrics", body=QUERY)
-    return [elt['_source']['title'] for elt in result["hits"]["hits"]]
+    source = result["hits"]["hits"]
+    seen = set()
+    new_source = []
+    for d in source:
+        t = tuple(d["_source"].items())
+        if t not in seen:
+            seen.add(t)
+            new_source.append(d)
+    
+    artist = [elt['_source']['artist'] for elt in new_source]
+    title = [elt['_source']['title'] for elt in new_source]
+    # test = [elt['_source']['title'] for elt in result["hits"]["hits"]]
+    return render_template('results.html',title=title,artists=artist)
 
 @app.route('/MusicSearchTitle', methods=('GET', 'POST'))
 def search_title(title):
