@@ -35,7 +35,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
 LOCAL = False
-Bilboard_ES = Elasticsearch(hosts="http://localhost", port= 9200)
+Bilboard_ES = Elasticsearch(hosts="http://localhost", port=9200)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
@@ -72,13 +72,14 @@ def generate_data(documents):
 
 @app.route('/MusicSearchSinger/<search_word>', methods=('GET', 'POST'))       
 def search_singer(search_word):
-    title = re.sub('_',' ', search_word)
+    artist = re.sub('_',' ', search_word)
     QUERY = {
       "query": {
         "term" : { 
-            "artist" : search_word.lower()} 
+            "artist" : artist.lower()} 
       }
     }
+
     result = Bilboard_ES.search(index="artist", body=QUERY)
     source = result["hits"]["hits"]
     seen = set()
@@ -98,7 +99,6 @@ def search_singer(search_word):
 @app.route('/MusicSearchTitle/<search_word>', methods=('GET', 'POST'))
 def search_title(search_word):
     title = re.sub('_',' ', search_word)
-    print(title)
     QUERY = {
       "query": {
         "match" : { 
@@ -123,13 +123,29 @@ def search_title(search_word):
 
 @app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
 def search_lyrics(search_word): 
-    title = re.sub('_',' ', search_word)
+    lyrics = re.sub('_',' ', search_word)
     QUERY = {
       "query": {
         "match" : { 
-            "lyrics" : search_word.lower()} 
+            "lyrics" : lyrics.lower()} 
       }
     }
+
+    
+    QUERY1 = {
+        "query": {
+            "bool": {
+                "should": {
+                    "multi_match": {
+                        "query": {},
+                        "fields": "artist",
+                    }
+                }
+            }
+        }
+    }
+
+
     result = Bilboard_ES.search(index="artist", body=QUERY)
     source = result["hits"]["hits"]
     seen = set()
