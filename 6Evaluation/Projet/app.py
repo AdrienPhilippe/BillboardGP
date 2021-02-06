@@ -54,7 +54,8 @@ def MusicSearch():
     """
     form = SearchBar()
     if form.validate_on_submit():
-        return redirect('/MusicSearchSinger/'+form.typing.data)
+        lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
+        return redirect('/MusicSearchSinger/'+lookfor)
     return render_template('search.html',form=form)
 
 def generate_data(documents):
@@ -71,6 +72,7 @@ def generate_data(documents):
 
 @app.route('/MusicSearchSinger/<search_word>', methods=('GET', 'POST'))       
 def search_singer(search_word):
+    title = re.sub('_',' ', search_word)
     QUERY = {
       "query": {
         "term" : { 
@@ -95,10 +97,12 @@ def search_singer(search_word):
 
 @app.route('/MusicSearchTitle/<search_word>', methods=('GET', 'POST'))
 def search_title(search_word):
+    title = re.sub('_',' ', search_word)
+    print(title)
     QUERY = {
       "query": {
-        "term" : { 
-            "title" : search_word.lower()} 
+        "match" : { 
+            "title" : title.lower()} 
       }
     }
     result = Bilboard_ES.search(index="artist", body=QUERY)
@@ -118,10 +122,11 @@ def search_title(search_word):
     return render_template('results_title.html',title=title,artists=artist,lyrics=lyrics)
 
 @app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
-def search_lyrics(search_word):
+def search_lyrics(search_word): 
+    title = re.sub('_',' ', search_word)
     QUERY = {
       "query": {
-        "term" : { 
+        "match" : { 
             "lyrics" : search_word.lower()} 
       }
     }
