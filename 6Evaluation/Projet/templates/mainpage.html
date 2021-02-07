@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>FindYourMusic</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}"> 
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>FindYourMusic</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}"> 
+    </head>
+    <body>
+        <center>
 
-<h1>Find ur Music
-<br>
-- You have the Lyrics in your head with have the song in our Database -</h1>
+        <h1>Find Your Music
+        <br>
+        - You have the Lyrics in your head with have the song in our Database -</h1>
 
-<p>You can choose the way of research</p>
-<p><strong>by Lyrics</strong>, <strong>by Titles</strong>, <strong>by Artists</strong>:</p>
+        <p>You can choose the way of research</p>
+        <p><strong>by Lyrics</strong>, <strong>by Titles</strong>, <strong>by Artists</strong>:</p>
 
-<button class="button button_Lyrics" onclick="searchL()">Lyrics</button>
-<button class="button button_Titles" onclick="searchT()">Titles</button>
-<button class="button button_Artists" onclick="searchA()">Artists</button>
+        <button class="button button_Lyrics" onclick="searchL()">Lyrics</button>
+        <button class="button button_Titles" onclick="searchT()">Titles</button>
+        <button class="button button_Artists" onclick="searchA()">Artists</button>
 
-<script>
-    function searchL() {
-        var x = lyrics;
-        window.location.href = "/MusicbarLooker";
-    }
-    function searchT() {
-        window.location.href = "/MusicbarLooker";
-    }
-    function searchA() {
-        window.location.href = "/MusicbarLooker";
-    }
-</script>
-
-</body>
+        <script>
+            function searchL() {
+                var x = lyrics;
+                window.location.pathname = "/MusicbarLooker";
+            }
+            function searchT() {
+                window.location.pathname = "/MusicbarLooker";
+            }
+            function searchA() {
+                window.location.pathname = "/MusicbarLooker";
+            }
+        </script>
+        <div class="footer">
+            Théo Guerrois et Adrien Philippe
+        </div>
+        </center>
+    </body>
 </html>
