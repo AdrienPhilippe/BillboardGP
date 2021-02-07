@@ -50,7 +50,7 @@ def mainpage():
 
 @app.route('/Random')
 def random():
-    """"""
+    """Permet de faire la fonction random"""
     data = pd.read_csv("lien.csv")
     rand = data.sample()['title']
     print(rand)
@@ -91,6 +91,7 @@ def generate_data(documents):
 
 @app.route('/MusicSearchSinger/<search_word>', methods=('GET', 'POST'))       
 def search_singer(search_word):
+    """ recherche dans les chanteurs"""
     artist = re.sub('_',' ', search_word)
     QUERY = {
       "query": {
@@ -117,6 +118,7 @@ def search_singer(search_word):
 
 @app.route('/MusicSearchMusic/<search_word>', methods=('GET', 'POST'))
 def search_result(search_word):
+    """ affiche les resultats"""
     title = re.sub('_',' ', search_word)
     QUERY = {
       "query": {
@@ -143,6 +145,7 @@ def search_result(search_word):
 
 @app.route('/MusicSearchTitle/<search_word>', methods=('GET', 'POST'))
 def search_title(search_word):
+    """Recherche par les titres"""
     title = re.sub('_','* *', search_word)
     QUERY = {
         "query": {
@@ -172,6 +175,7 @@ def search_title(search_word):
 
 @app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
 def search_lyrics(search_word): 
+    """REcherche par les paroles"""
     lyrics = re.sub('_','* *', search_word)
     
     QUERY = {
