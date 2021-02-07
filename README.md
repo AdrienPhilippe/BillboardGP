@@ -21,7 +21,6 @@ Voici la liste des librairies utilisés pour ce projet :
 * pymongo
 * elasticsearch
 
-
 On peut les installer en utilisant la commande suivante :
 ```
 pip install "nom de la librairie"
