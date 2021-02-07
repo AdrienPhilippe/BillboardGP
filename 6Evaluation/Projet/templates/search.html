@@ -9,7 +9,7 @@
     <center>
     <h1>FindYourMusic</h1>
 
-    <form method="POST" action="/MusicbarLooker">
+    <form method="POST" action={{choice}}>
       {{ form.hidden_tag() }}
       {{ form.typing.label }} {{ form.typing(size=20) }}
       <input type="submit" value="Search">

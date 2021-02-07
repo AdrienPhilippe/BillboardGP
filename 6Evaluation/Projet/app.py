@@ -40,12 +40,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 @app.route('/')
-def rien():
+def mainpage():
   data = pd.read_csv("lien.csv")
   documents = data.fillna("").to_dict(orient="records")
   bulk(Bilboard_ES, generate_data(documents))
 
-  return redirect('/MusicbarLooker')
+  return render_template('mainpage.html')
 
 @app.route('/MusicbarLooker', methods=('GET', 'POST'))
 def MusicSearch():
@@ -137,8 +137,10 @@ def search_lyrics(search_word):
             "bool": {
                 "should": {
                     "multi_match": {
-                        "query": {},
-                        "fields": "artist",
+                        "query": {
+                            lyrics.lower()
+                        },
+                        "fields": "Lyrics",
                     }
                 }
             }
@@ -146,7 +148,7 @@ def search_lyrics(search_word):
     }
 
 
-    result = Bilboard_ES.search(index="artist", body=QUERY)
+    result = Bilboard_ES.search(index="artist", body=QUERY1)
     source = result["hits"]["hits"]
     seen = set()
     new_source = []
