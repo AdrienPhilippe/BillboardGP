@@ -13,11 +13,13 @@
         - You have the Lyrics in your head with have the song in our Database -</h1>
 
         <p>You can choose the way of research</p>
-        <p><strong>research by :</strong></p>
+        <p><strong>Research by :</strong></p>
 
         <button class="button button_Lyrics" onclick="searchL()">Lyrics</button>
         <button class="button button_Titles" onclick="searchT()">Titles</button>
         <button class="button button_Artists" onclick="searchA()">Artists</button>
+        <br>
+        <button class="buttonRandom" onclick="random()">Random Song</button>
 
         <script>
             function searchL() {
@@ -29,9 +31,12 @@
             function searchA() {
                 window.location.pathname = "/MusicbarLooker/artist";
             }
+            function random() {
+                window.location.pathname = "/Random";
+            }
         </script>
         <div class="footer">
-            Théo Guerrois et Adrien Philippe
+            Théo Guerrois & Adrien Philippe
         </div>
         </center>
     </body>
