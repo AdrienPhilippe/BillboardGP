@@ -2,11 +2,6 @@
 
 FindYourMusic est un projet de scraping de 2 sites, Billboard et Genius qui permet via une application Flask de faire une recherche en fonction de l'artiste, le titre de la musique ou les paroles, et de trouver la ou les musiques associées.
 
-
-## Table des matières
-
-[[_TOC_]]
-
 ## Installation
 ### Librairies
 Voici la liste des librairies utilisés pour ce projet :
