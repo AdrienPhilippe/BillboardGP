@@ -44,8 +44,8 @@ def mainpage():
   data = pd.read_csv("lien.csv")
   documents = data.fillna("").to_dict(orient="records")
   bulk(Bilboard_ES, generate_data(documents))
-
-  return render_template('mainpage.html')
+  return redirect("/MusicbarLooker")
+#   return render_template('mainpage.html')
 
 @app.route('/MusicbarLooker', methods=('GET', 'POST'))
 def MusicSearch():
@@ -55,7 +55,7 @@ def MusicSearch():
     form = SearchBar()
     if form.validate_on_submit():
         lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
-        return redirect('/MusicSearchSinger/'+lookfor)
+        return redirect('/MusicSearchLyrics/'+lookfor)
     return render_template('search.html',form=form)
 
 def generate_data(documents):
@@ -124,6 +124,8 @@ def search_title(search_word):
 @app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
 def search_lyrics(search_word): 
     lyrics = re.sub('_',' ', search_word)
+    lyrics += "*"
+    
     QUERY = {
       "query": {
         "match" : { 
@@ -131,24 +133,26 @@ def search_lyrics(search_word):
       }
     }
 
-    
-    QUERY1 = {
+
+    QUERY2 = {
         "query": {
-            "bool": {
-                "should": {
-                    "multi_match": {
-                        "query": {
-                            lyrics.lower()
-                        },
-                        "fields": "Lyrics",
-                    }
+            "function_score": {
+            "boost_mode": "multiply", 
+            "query": {
+                "common": {
+                "lyrics": {
+                    "query": lyrics.lower(),
+                    "cutoff_frequency": 0.001,
+                    "low_freq_operator": "and"
                 }
+                }
+            },
             }
         }
     }
 
 
-    result = Bilboard_ES.search(index="artist", body=QUERY1)
+    result = Bilboard_ES.search(index="artist", body=QUERY2)
     source = result["hits"]["hits"]
     seen = set()
     new_source = []
@@ -160,7 +164,10 @@ def search_lyrics(search_word):
     
     artist = [elt['_source']['artist'] for elt in new_source]
     title = [elt['_source']['title'] for elt in new_source]
-    lyrics = [elt['_source']['lyrics'] for elt in new_source]
+
+    print(artist)
+    print(title)
+    # lyrics = [elt['_source']['lyrics'] for elt in new_source]
 
     return render_template('results_lyrics.html',title=title,artists=artist,lyrics=lyrics)
 

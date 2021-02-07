@@ -1,20 +1,20 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>FindYourMusic</title>s
+		<title>FindYourMusic</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}"> 
 	</head>
 	<body>
 		<center>
 
-		<h1>RECHERCHES POUR : {{artists[0]}}</h1>
+		<h1>RECHERCHES POUR : {{lyrics}}</h1>
 		
 		<h2>Liste des titres : </h2>
 		{% for i in range(title|length) %}
 		<table class="table-fill">
 			<tbody class="table-hover">
 				<tr>
-					<td>{{i+1}}: {{title[i]}}</td>
+					<td>{{i+1}}: {{title[i]}},  {{artists[i]}}</td>
 				</tr>
 			</tbody>
 		</table>
