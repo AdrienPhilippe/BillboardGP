@@ -47,6 +47,14 @@ def mainpage():
 #   return redirect("/MusicbarLooker")
   return render_template('mainpage.html')
 
+# @app.route('/random')
+# def mainpage():
+#   data = pd.read_csv("lien.csv")
+#   documents = data.fillna("").to_dict(orient="records")
+#   bulk(Bilboard_ES, generate_data(documents))
+# #   return redirect("/MusicbarLooker")
+#   return render_template('mainpage.html')
+
 @app.route('/MusicbarLooker/<choice>', methods=('GET', 'POST'))
 def MusicSearch(choice):
     """
@@ -108,6 +116,7 @@ def search_singer(search_word):
 
     return render_template('results_singer.html',title=title,artists=artist,lyrics=lyrics)
 
+
 @app.route('/MusicSearchTitle/<search_word>', methods=('GET', 'POST'))
 def search_title(search_word):
     title = re.sub('_',' ', search_word)
@@ -136,6 +145,7 @@ def search_title(search_word):
 @app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
 def search_lyrics(search_word): 
     lyrics = re.sub('_',' ', search_word)
+    lyrics
     
     QUERY = {
         "query": {
