@@ -44,18 +44,31 @@ def mainpage():
   data = pd.read_csv("lien.csv")
   documents = data.fillna("").to_dict(orient="records")
   bulk(Bilboard_ES, generate_data(documents))
-  return redirect("/MusicbarLooker")
-#   return render_template('mainpage.html')
+#   return redirect("/MusicbarLooker")
+  return render_template('mainpage.html')
 
-@app.route('/MusicbarLooker', methods=('GET', 'POST'))
-def MusicSearch():
+@app.route('/MusicbarLooker/<choice>', methods=('GET', 'POST'))
+def MusicSearch(choice):
     """
     Création de la barre de recherche ainsi que de l'affichage des données, et affichage du bargraph
     """
+    choice=choice
+    print(choice)
     form = SearchBar()
     if form.validate_on_submit():
-        lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
-        return redirect('/MusicSearchLyrics/'+lookfor)
+        if choice == 'lyrics':
+            lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
+            return redirect('/MusicSearchLyrics/'+lookfor)
+
+        if choice == 'title':
+            lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
+            return redirect('/MusicSearchTitle/'+lookfor)
+        
+        if choice == 'artist':
+            print('WOWOWOW')
+            lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
+            return redirect('/MusicSearchSinger/'+lookfor)
+
     return render_template('search.html',form=form)
 
 def generate_data(documents):
@@ -152,7 +165,7 @@ def search_lyrics(search_word):
     }
 
 
-    result = Bilboard_ES.search(index="artist", body=QUERY2)
+    result = Bilboard_ES.search(index="artist", body=QUERY)
     source = result["hits"]["hits"]
     seen = set()
     new_source = []

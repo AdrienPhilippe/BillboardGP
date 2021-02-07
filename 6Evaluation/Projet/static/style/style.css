@@ -22,7 +22,7 @@ form{
 }
 
 a{
-    color:#00000000;
+    color: black;
     text-decoration: none;
 }
 a:hover{
@@ -44,7 +44,7 @@ a:hover{
 tr {
     border-top: 1px solid #C1C3D1;
     border-bottom: 1px solid #C1C3D1;
-    color:#ecedf1;
+    color:#00000000;
     font-size:16px;
     font-weight:normal;
     text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
@@ -98,6 +98,11 @@ td:last-child {
 p{
     padding-top: 50px;
     font-size:18px;
+    color: black;
+}
+
+.recherche{
+    color: black;
 }
 
 .button {
