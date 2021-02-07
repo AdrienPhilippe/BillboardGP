@@ -136,35 +136,18 @@ def search_title(search_word):
 @app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
 def search_lyrics(search_word): 
     lyrics = re.sub('_',' ', search_word)
-    lyrics += "*"
     
     QUERY = {
-      "query": {
-        "match" : { 
-            "lyrics" : lyrics.lower()} 
-      }
-    }
-
-
-    QUERY2 = {
         "query": {
-            "function_score": {
-            "boost_mode": "multiply", 
-            "query": {
-                "common": {
-                "lyrics": {
-                    "query": lyrics.lower(),
-                    "cutoff_frequency": 0.001,
-                    "low_freq_operator": "and"
-                }
-                }
-            },
+            "query_string" : {
+                "default_field" : "lyrics",
+                "query" : "*"+lyrics+"*"
             }
-        }
+        }   
     }
 
-
-    result = Bilboard_ES.search(index="artist", body=QUERY2)
+    result = Bilboard_ES.search(index="artist", body=QUERY)
+    
     source = result["hits"]["hits"]
     seen = set()
     new_source = []
