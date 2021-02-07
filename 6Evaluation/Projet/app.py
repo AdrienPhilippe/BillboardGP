@@ -65,7 +65,6 @@ def MusicSearch(choice):
             return redirect('/MusicSearchTitle/'+lookfor)
         
         if choice == 'artist':
-            print('WOWOWOW')
             lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
             return redirect('/MusicSearchSinger/'+lookfor)
 
@@ -165,7 +164,7 @@ def search_lyrics(search_word):
     }
 
 
-    result = Bilboard_ES.search(index="artist", body=QUERY)
+    result = Bilboard_ES.search(index="artist", body=QUERY2)
     source = result["hits"]["hits"]
     seen = set()
     new_source = []

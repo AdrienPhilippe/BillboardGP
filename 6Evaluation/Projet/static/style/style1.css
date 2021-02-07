@@ -22,8 +22,9 @@ form{
 }
 
 a{
-    color: black;
+    color: #22262e;
     text-decoration: none;
+    opacity: 1 ;
 }
 a:hover{
     color:#FFFFFF;  
@@ -44,7 +45,7 @@ a:hover{
 tr {
     border-top: 1px solid #C1C3D1;
     border-bottom: 1px solid #C1C3D1;
-    color:#00000000;
+    color:#22262e;
     font-size:16px;
     font-weight:normal;
     text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
@@ -98,11 +99,11 @@ td:last-child {
 p{
     padding-top: 50px;
     font-size:18px;
-    color: black;
+    color: #22262e;
 }
 
 .recherche{
-    color: black;
+    color: #22262e;
 }
 
 .button {
@@ -120,7 +121,7 @@ p{
   
 .button_Lyrics {
     background-color: white; 
-    color: black; 
+    color: #22262e; 
     border: 2px solid #4CAF50;
 }
   
@@ -131,7 +132,7 @@ p{
   
 .button_Titles {
     background-color: white; 
-    color: black; 
+    color: #22262e; 
     border: 2px solid #008CBA;
 }
   
@@ -142,7 +143,7 @@ p{
   
 .button_Artists {
     background-color: white; 
-    color: black; 
+    color: #22262e; 
     border: 2px solid #FF0000;
 }
   

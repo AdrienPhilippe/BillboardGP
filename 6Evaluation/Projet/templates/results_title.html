@@ -2,29 +2,26 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>FindYourMusic</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}"> 
+        <link rel="stylesheet" href="{{ url_for('static', filename='style/style1.css') }}"> 
 	</head>
 	<body>
 		<center>
 			
 		<h1>RECHERCHES POUR : {{title[0]}}</h1>
 
-		<h2>Liste des titres : </h2>
-		{% for i in range(title|length) %}
+		<h2> Artist : </h2>
 		<table class="table-fill">
 			<tbody class="table-hover">
 				<tr>
-					<td>{{i+1}}: {{artists[i]}}</td>
+					<td>{{artists[0]}}</td>
 				</tr>
 			</tbody>
 		</table>
-		{% endfor %}
-
 		<p> {{lyrics}} </p>
 
 		<br/>
 		<div class="autre">
-		<a class="recherche" href='/MusicbarLooker'> Effectuer une autre recherche ?</a>
+		<a class="recherche" href='/'> Effectuer une autre recherche ?</a>
 		</div>
 		<br>
 
