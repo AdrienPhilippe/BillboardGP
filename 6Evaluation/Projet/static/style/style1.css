@@ -152,14 +152,14 @@ p{
     color: white;
 }
 
-.buttonRandom{
+.button_Random{
     margin-top: 20px;
     background-color: white; 
     color: #22262e; 
     border: 2px solid #ccc929;
 }
 
-.buttonRandom:hover {
+.button_Random:hover {
     margin-top: 20px;
     background-color: #ccc929;
     color: white;

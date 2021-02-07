@@ -41,19 +41,18 @@ app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 @app.route('/')
 def mainpage():
-  data = pd.read_csv("lien.csv")
-  documents = data.fillna("").to_dict(orient="records")
-  bulk(Bilboard_ES, generate_data(documents))
-#   return redirect("/MusicbarLooker")
-  return render_template('mainpage.html')
+    data = pd.read_csv("lien.csv")
+    documents = data.fillna("").to_dict(orient="records")
+    bulk(Bilboard_ES, generate_data(documents))
+    #   return redirect("/MusicbarLooker")
+    return render_template('mainpage.html')
 
-# @app.route('/random')
-# def mainpage():
-#   data = pd.read_csv("lien.csv")
-#   documents = data.fillna("").to_dict(orient="records")
-#   bulk(Bilboard_ES, generate_data(documents))
-# #   return redirect("/MusicbarLooker")
-#   return render_template('mainpage.html')
+@app.route('/Random')
+def random():
+    data = pd.read_csv("lien.csv")
+    rand = data.sample()['title']
+    print(rand)
+    return redirect("/MusicSearchTitle/"+str(rand))
 
 @app.route('/MusicbarLooker/<choice>', methods=('GET', 'POST'))
 def MusicSearch(choice):
@@ -64,16 +63,14 @@ def MusicSearch(choice):
     print(choice)
     form = SearchBar()
     if form.validate_on_submit():
+        lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
         if choice == 'lyrics':
-            lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
             return redirect('/MusicSearchLyrics/'+lookfor)
 
         if choice == 'title':
-            lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
             return redirect('/MusicSearchTitle/'+lookfor)
         
         if choice == 'artist':
-            lookfor = re.sub('[^A-Za-z0-9]','_', form.typing.data)
             return redirect('/MusicSearchSinger/'+lookfor)
 
     return render_template('search.html',form=form)
