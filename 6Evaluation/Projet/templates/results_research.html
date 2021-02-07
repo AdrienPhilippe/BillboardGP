@@ -6,20 +6,19 @@
 	</head>
 	<body>
 		<center>
+			
+		<h1>RESEARCH FOR : {{title[0]}}</h1>
 
-		<h1>RESEARCH FOR : {{lyrics}}</h1>
-		
-		<h2>Title list : </h2>
-		{% for i in range(title|length) %}
+		<h2> Artist : </h2>
 		<table class="table-fill">
 			<tbody class="table-hover">
 				<tr>
-					<td><a href="/MusicSearchMusic/{{title[i]}}">{{i+1}}: {{title[i]}},  {{artists[i]}}</a></td>
+					<td>{{artists[0]}}</td>
 				</tr>
 			</tbody>
 		</table>
-		{% endfor %}
-		
+		<p> {{lyrics}} </p>
+
 		<br/>
 		<div class="autre">
 		<a class="recherche" href='/'> Other research ?</a>
@@ -30,5 +29,5 @@
 			Théo Guerrois & Adrien Philippe
 		</div>
 		</center>
-	</body>
+  	</body>
 </html>

@@ -2,7 +2,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>FindYourMusic</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='style/style1.css') }}"> 
+		<link rel="stylesheet" href="{{ url_for('static', filename='style/style2.css') }}"> 
 	</head>
 	<body>
 		<center>
@@ -14,7 +14,7 @@
 		<table class="table-fill">
 			<tbody class="table-hover">
 				<tr>
-					<td><a href="/MusicSearchTitle/{{title[i]}}">{{i+1}}: {{title[i]}}</a></td>
+					<td><a href="/MusicSearchMusic/{{title[i]}}">{{i+1}}: {{title[i]}}</a></td>
 				</tr>
 			</tbody>
 		</table>

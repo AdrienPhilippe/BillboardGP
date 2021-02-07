@@ -41,6 +41,7 @@ app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 @app.route('/')
 def mainpage():
+    """affiche la page principale"""
     data = pd.read_csv("lien.csv")
     documents = data.fillna("").to_dict(orient="records")
     bulk(Bilboard_ES, generate_data(documents))
@@ -49,15 +50,16 @@ def mainpage():
 
 @app.route('/Random')
 def random():
+    """"""
     data = pd.read_csv("lien.csv")
     rand = data.sample()['title']
     print(rand)
-    return redirect("/MusicSearchTitle/"+str(rand))
+    return redirect("/MusicSearchMusic/"+str(rand))
 
 @app.route('/MusicbarLooker/<choice>', methods=('GET', 'POST'))
 def MusicSearch(choice):
     """
-    Création de la barre de recherche ainsi que de l'affichage des données, et affichage du bargraph
+    Permet d'acceder aux différents style de recherche
     """
     choice=choice
     print(choice)
@@ -113,9 +115,8 @@ def search_singer(search_word):
 
     return render_template('results_singer.html',title=title,artists=artist,lyrics=lyrics)
 
-
-@app.route('/MusicSearchTitle/<search_word>', methods=('GET', 'POST'))
-def search_title(search_word):
+@app.route('/MusicSearchMusic/<search_word>', methods=('GET', 'POST'))
+def search_result(search_word):
     title = re.sub('_',' ', search_word)
     QUERY = {
       "query": {
@@ -137,24 +138,55 @@ def search_title(search_word):
     title = [elt['_source']['title'] for elt in new_source]
     lyrics = [elt['_source']['lyrics'] for elt in new_source]
 
+    return render_template('results_research.html',title=title,artists=artist,lyrics=lyrics)
+
+
+@app.route('/MusicSearchTitle/<search_word>', methods=('GET', 'POST'))
+def search_title(search_word):
+    title = re.sub('_','* *', search_word)
+    QUERY = {
+        "query": {
+            "query_string" : {
+                "default_field" : "title",
+                'default_operator': "AND",
+                "minimum_should_match":"90%",
+                "query" : "*"+title+"*"
+            }
+        }   
+    }
+    result = Bilboard_ES.search(index="artist", body=QUERY)
+    source = result["hits"]["hits"]
+    seen = set()
+    new_source = []
+    for d in source:
+        t = tuple(d["_source"].items())
+        if t not in seen:
+            seen.add(t)
+            new_source.append(d)
+    
+    artist = [elt['_source']['artist'] for elt in new_source]
+    title = [elt['_source']['title'] for elt in new_source]
+    lyrics = [elt['_source']['lyrics'] for elt in new_source]
+
     return render_template('results_title.html',title=title,artists=artist,lyrics=lyrics)
 
 @app.route('/MusicSearchLyrics/<search_word>', methods=('GET', 'POST'))
 def search_lyrics(search_word): 
-    lyrics = re.sub('_',' ', search_word)
-    lyrics
+    lyrics = re.sub('_','* *', search_word)
     
     QUERY = {
         "query": {
             "query_string" : {
+                "boost" : 5,
                 "default_field" : "lyrics",
+                'default_operator': "AND",
+                "minimum_should_match":"90%",
                 "query" : "*"+lyrics+"*"
             }
         }   
     }
 
     result = Bilboard_ES.search(index="artist", body=QUERY)
-    
     source = result["hits"]["hits"]
     seen = set()
     new_source = []
@@ -167,6 +199,7 @@ def search_lyrics(search_word):
     artist = [elt['_source']['artist'] for elt in new_source]
     title = [elt['_source']['title'] for elt in new_source]
 
+    print("\n\n\n\n")
     print(artist)
     print(title)
     # lyrics = [elt['_source']['lyrics'] for elt in new_source]

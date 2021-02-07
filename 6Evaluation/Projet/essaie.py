@@ -14,9 +14,12 @@ for j in range(len(dfGenius['artist'])):
 
 dicfin = {}
 for i in range(len(start_urls)):
-    page = requests.get(start_urls[i])
-    html = BeautifulSoup(page.content, 'lxml')
-    dicfin[str(dfGenius['title'][i])] = {'artist': str(dfGenius['artist'][i]), 'lyrics' : html.find("div", class_="lyrics").get_text()}
+    try:
+        page = requests.get(start_urls[i])
+        html = BeautifulSoup(page.content, 'lxml')
+        dicfin[str(dfGenius['title'][i])] = {'artist': str(dfGenius['artist'][i]), 'lyrics' : html.find("div", class_="lyrics").get_text()}
+    except:
+        pass
 
 final = pd.from_dict(dicfin,orient='index')
 
